@@ -8,6 +8,7 @@ A Model Context Protocol server for MSSQL using pymssql
 """
 
 import asyncio
+import json
 import os
 import sys
 from typing import Any, Optional
@@ -34,7 +35,9 @@ def get_connection() -> pymssql.Connection:
         user=DB_USER,
         password=DB_PASSWORD,
         database=DB_NAME,
-        port=DB_PORT
+        port=DB_PORT,
+        timeout=30,
+        login_timeout=15
     )
 
 
@@ -346,7 +349,6 @@ async def read_data(query: str) -> str:
             return "No results found"
 
         # Format as JSON-like output
-        import json
         return json.dumps(rows, indent=2, default=str)
     finally:
         if conn:

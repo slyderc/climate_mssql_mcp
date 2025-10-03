@@ -64,6 +64,11 @@ Add this to your project's `.mcp.json` file:
 | `SQL_PASSWORD` | Yes | SQL Server password | `MyP@ssw0rd` |
 | `READONLY` | No | Set to "true" to disable write operations | `false` |
 
+**Connection Behavior:**
+- Connection timeout: 30 seconds (network operations)
+- Login timeout: 15 seconds (authentication)
+- Connections are opened per-operation and closed immediately after (no pooling)
+
 ### Connection String Format
 
 For named instances (like SQLEXPRESS), use double backslashes in JSON:
@@ -179,6 +184,11 @@ Claude will automatically use the appropriate MCP tools to execute your requests
 - Check firewall rules allow connections on the specified port
 - Confirm SQL Server authentication is enabled (not just Windows auth)
 - Test connection with a SQL client (Azure Data Studio, SSMS) using the same credentials
+
+### Timeout Errors
+- Connection attempts timeout after 15 seconds (login) or 30 seconds (operations)
+- If you see timeout errors on a known-working server, check network latency
+- For slow networks, you may need to adjust timeout values in server.py:39-40
 
 ### Permission Errors
 - Ensure the SQL user has appropriate permissions on the target database
